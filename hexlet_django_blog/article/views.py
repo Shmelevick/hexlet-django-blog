@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.urls import reverse
 from django.views import View
+from hexlet_django_blog.article.models import Article
 
 # Create your views here.
 
@@ -30,3 +31,15 @@ class HomeRedirectView(View):
     def get(self, request, *args, **kwargs):
         url = reverse('article', kwargs={"tag": "python", "article_id": 42})
         return redirect(url)
+    
+
+class IndexView(View):
+    def get(self, request, *args, **kwargs):
+        articles = Article.objects.all()[:15]
+        return render(
+            request,
+            "articles/index.html",
+            context={
+                "articles": articles
+            }
+        )
