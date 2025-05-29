@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 from django.urls import reverse
 from django.views import View
+from django.contrib import messages
 from hexlet_django_blog.article.models import Article, Comment
+from .forms import ArticleForm
+
 
 # Create your views here.
 
@@ -64,3 +67,18 @@ class ArticleCommentsView(View): #todo
             request,
             ""
         )
+
+class ArticleFormCreateView(View):
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm()
+        return render(request, "articles/create.html", {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Статья успешно создана")
+            return redirect('articles')
+        messages.error(request, "Исправьте ошибки")
+        return render(request, 'articles/create.html', {'form': form})
+
