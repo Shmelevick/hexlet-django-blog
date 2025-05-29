@@ -100,8 +100,10 @@ class ArticleFormEditView(View):
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
             form.save()
+            messages.success(request, "Статья успешно отредачена")
             return redirect("articles")
         
+        messages.error(request, "Исправьте ошибки редактирования")
         return render(
             request,
             "articles/update.html",
