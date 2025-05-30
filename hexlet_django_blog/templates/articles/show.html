@@ -4,4 +4,8 @@
     <h1>{{ article.name }}</h1>
     <div>{{ article.body }}</div>
     <div><a href="{% url 'articles_update' article.id %}">Обновить статью</a></div>
+    <form action='{% url "articles_delete" article.id %}' method='post'>
+        {% csrf_token %}
+        <input type='submit' value='Удалить'>
+    </form> 
 {% endblock %}
